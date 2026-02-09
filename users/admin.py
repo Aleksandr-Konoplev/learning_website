@@ -1,13 +1,14 @@
+from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
-
 from users.models import User
 
 
 @admin.register(User)
-class RecipientAdmin(admin.ModelAdmin):
+class UserAdmin(UserAdmin):
     list_display = (
+        "id",
         "email",
-        "full_name",
+        "citi",
     )
-    list_filter = ("is_active",)
+    list_filter = ("citi",)
     search_fields = ("email",)
