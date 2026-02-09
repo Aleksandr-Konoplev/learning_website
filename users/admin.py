@@ -6,9 +6,9 @@ from users.models import User
 @admin.register(User)
 class UserAdmin(UserAdmin):
     list_display = (
-        "id",
-        "email",
-        "citi",
+        'id',
+        'email',
+        'citi',
     )
-    list_filter = ("citi",)
-    search_fields = ("email",)
+    list_filter = ('citi',)
+    search_fields = ('email',)
