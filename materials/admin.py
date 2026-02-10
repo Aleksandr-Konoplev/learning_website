@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Course, Lesson
+from materials.models import Course, Lesson
 
 
 @admin.register(Course)
@@ -10,6 +10,6 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'price', 'category', 'is_published')
-    list_filter = ('category',)
+    list_display = ('id', 'name', 'course')
+    list_filter = ('course',)
     search_fields = ('name',)

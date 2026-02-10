@@ -19,7 +19,6 @@ class Course(models.Model):
     )
     description = models.TextField(verbose_name='Описание курса')
 
-
     class Meta:
         verbose_name = 'Курс'
         verbose_name_plural = 'Курсы'
