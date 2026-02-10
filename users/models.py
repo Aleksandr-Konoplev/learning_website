@@ -3,12 +3,18 @@ from django.db import models
 
 
 class User(AbstractUser):
+    """
+    Кастомная модель пользователя
+    """
     email: models.EmailField
+    phone_number: models.CharField
+    citi: models.CharField
+    avatar: models.ImageField
 
     username = None
     email = models.EmailField(unique=True, verbose_name='Email')
-    phone_number = models.CharField(max_length=15, verbose_name='Номер телефона')
-    citi = models.CharField(max_length=50, verbose_name='Город')
+    phone_number = models.CharField(max_length=15, verbose_name='Номер телефона', blank=True, null=True)
+    citi = models.CharField(max_length=50, verbose_name='Город', blank=True, null=True)
     avatar = models.ImageField(
         upload_to="users/avatars/",
         default="users/avatars/default_ava.png",

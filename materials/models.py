@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Course(models.Model):
+    """
+    Модель обучающего курса, который состоит из отдельных уроков
+    """
     name: models.CharField
     preview: models.ImageField
     description: models.TextField
@@ -26,9 +29,14 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
+    """
+    Модель одного урока входящего в курс
+    """
     name: models.CharField
-    preview: models.ImageField
     description: models.TextField
+    preview: models.ImageField
+    video_url: models.URLField
+    course: models.ForeignKey
 
     name = models.CharField(max_length=255, verbose_name='Название урока')
     description = models.TextField(verbose_name='Описание урока')
