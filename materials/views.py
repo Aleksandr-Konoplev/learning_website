@@ -1,9 +1,9 @@
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from materials.models import Course
 from materials.serializers import CourseSerializer
 
 
-class CourseViewSet(ViewSet):
+class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
-    serializers_class = CourseSerializer
+    serializer_class = CourseSerializer
