@@ -4,5 +4,6 @@ from materials.models import Course
 
 
 class CourseSerializer(ModelSerializer):
-    model = Course
-    fields = '__all__'
+    class Meta:
+        model = Course
+        fields = '__all__'
