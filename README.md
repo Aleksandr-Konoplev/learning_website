@@ -63,6 +63,39 @@ python manage.py runserver
 
 Сервер запустится на http://127.0.0.1:8000/
 
+## API Эндпоинты
+
+### Admin
+- `GET /admin/` - Админ панель Django
+
+### Materials API (`/materials/`)
+
+#### Курсы
+- `GET /materials/` - Список всех курсов
+- `POST /materials/` - Создать новый курс
+- `GET /materials/{id}/` - Получить курс по ID
+- `PUT /materials/{id}/` - Полностью обновить курс
+- `PATCH /materials/{id}/` - Частично обновить курс
+- `DELETE /materials/{id}/` - Удалить курс
+
+#### Уроки
+- `GET /materials/lessons/` - Список всех уроков
+- `POST /materials/lesson/create/` - Создать новый урок
+- `GET /materials/lesson/{id}/` - Получить урок по ID
+- `PUT /materials/lesson/{id}/update/` - Обновить урок
+- `PATCH /materials/lesson/{id}/update/` - Частично обновить урок
+- `DELETE /materials/lesson/{id}/delete/` - Удалить урок
+
+### Users API (`/users/`)
+
+#### Пользователи
+- `GET /users/` - Список всех пользователей
+- `POST /users/` - Создать нового пользователя
+- `GET /users/{id}/` - Получить пользователя по ID
+- `PUT /users/{id}/` - Полностью обновить пользователя
+- `PATCH /users/{id}/` - Частично обновить пользователя
+- `DELETE /users/{id}/` - Удалить пользователя
+
 ## Технологии
 
 - Django 6.x
