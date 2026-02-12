@@ -80,6 +80,17 @@
     }
   },
   {
+    "model": "materials.lesson",
+    "pk": 2,
+    "fields": {
+      "name": "Основы JavaScript",
+      "description": "Введение в синтаксис JavaScript",
+      "preview": "materials/preview/default_prev.png",
+      "video_url": "https://example.com/video3",
+      "course": 2
+    }
+  },
+  {
     "model": "users.payment",
     "pk": 1,
     "fields": {
