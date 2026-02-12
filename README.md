@@ -54,6 +54,11 @@ learning_website/
    ```bash
    python manage.py migrate
    ```
+   
+5. Добавить тестовые значения в базу данных:
+   ```bash
+   python manage.py loaddata users/fixtures/test_data.json
+   ```
 
 ## Запуск
 

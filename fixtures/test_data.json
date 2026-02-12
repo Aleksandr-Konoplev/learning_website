@@ -1,0 +1,121 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$test_salt$1$test_hash_for_user1",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Иван",
+      "last_name": "Иванов",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-15T10:00:00Z",
+      "email": "ivan@example.com",
+      "phone_number": "+7-999-123-45-67",
+      "citi": "Москва",
+      "avatar": "users/avatars/default_ava.png",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$test_salt$1$test_hash_for_user2",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Мария",
+      "last_name": "Петрова",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-02-20T14:30:00Z",
+      "email": "maria@example.com",
+      "phone_number": "+7-999-987-65-43",
+      "citi": "Санкт-Петербург",
+      "avatar": "users/avatars/default_ava.png",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 1,
+    "fields": {
+      "name": "Python для начинающих",
+      "preview": "materials/preview/default_prev.png",
+      "description": "Базовый курс по программированию на Python"
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 2,
+    "fields": {
+      "name": "JavaScript Pro",
+      "preview": "materials/preview/default_prev.png",
+      "description": "Продвинутый курс по JavaScript"
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 1,
+    "fields": {
+      "name": "Django ORM",
+      "description": "Урок по работе с ORM в Django",
+      "preview": "materials/preview/default_prev.png",
+      "video_url": "https://example.com/video1",
+      "course": 1
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 2,
+    "fields": {
+      "name": "Основы Python",
+      "description": "Введение в синтаксис Python",
+      "preview": "materials/preview/default_prev.png",
+      "video_url": "https://example.com/video2",
+      "course": 1
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "payment_date": "2024-03-01T09:00:00Z",
+      "paid_course": 1,
+      "paid_lesson": null,
+      "payment_amount": "15000.00",
+      "payment_method": "transfer",
+      "name_product": "Python для начинающих"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "payment_date": "2024-03-10T11:00:00Z",
+      "paid_course": null,
+      "paid_lesson": 1,
+      "payment_amount": "2500.00",
+      "payment_method": "cash",
+      "name_product": "Django ORM"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 3,
+    "fields": {
+      "user": 2,
+      "payment_date": "2024-03-05T16:45:00Z",
+      "paid_course": 2,
+      "paid_lesson": null,
+      "payment_amount": "20000.00",
+      "payment_method": "transfer",
+      "name_product": "JavaScript Pro"
+    }
+  }
+]
