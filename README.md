@@ -60,6 +60,23 @@ learning_website/
    python manage.py loaddata users/fixtures/test_data.json
    ```
 
+## Кастомные команды
+### Использование:
+
+#### Очищает данные через Django ORM:
+- python manage.py reset_db
+- python manage.py reset_db --force
+
+#### Полный сброс через SQL (PostgreSQL):
+- python manage.py reset_db_full
+- python manage.py reset_db_full --force
+
+#### Что делают команды:
+- Удаляют все данные из таблиц с учетом связей ForeignKey
+- Сбрасывают sequence ID (id начинается с 1)
+- Показывают статистику удаленных записей
+- Запрашивают подтверждение перед удалением
+
 ## Запуск
 
 ```bash
@@ -67,6 +84,7 @@ python manage.py runserver
 ```
 
 Сервер запустится на http://127.0.0.1:8000/
+
 
 ## API Эндпоинты
 

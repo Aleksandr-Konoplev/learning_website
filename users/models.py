@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db import models
 
 from materials.models import Course, Lesson
@@ -47,19 +48,23 @@ class Payment(models.Model):
         ('transfer', 'Перевод на счет'),
     ]
 
+
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     payment_date = models.DateTimeField(verbose_name='Дата оплаты', auto_now_add=True)
-    # Поля для универсальной связи с разными моделями
-    paid_course = models.ForeignKey(Course,on_delete=models.SET_NULL , null=True, blank=True, verbose_name='Оплаченный курс', related_name='course_payments')
-    paid_lesson = models.ForeignKey(Lesson,on_delete=models.SET_NULL , null=True, blank=True, verbose_name='Оплаченный урок', related_name='lesson_payments')
+
+    # Универсальная связь (GenericForeignKey)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name='Тип объекта')
+    object_id = models.PositiveIntegerField(verbose_name='ID объекта')
+    paid_object = GenericForeignKey('content_type', 'object_id')
+
+    # Параметры оплаты
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Сумма оплаты')
     payment_method = models.CharField(max_length=15, choices=PAYMENT_METHOD_CHOICES)
+
     # Поле для записи названия купленного товара, что бы платёж не потерялся при его удалении,
-    name_product = models.CharField(max_length=255, verbose_name='Название на случай удаления курса, или урока')
+    name_paid_product = models.CharField(max_length=255, verbose_name='Название на случай удаления курса, или урока')
 
     def save(self, *args, **kwargs):
-        if self.paid_course:
-            self.name_product = self.paid_course.name
-        elif self.paid_lesson:
-            self.name_product = self.paid_lesson.name
+        if self.paid_object:
+            self.name_paid_product = self.paid_object.name
         super().save(*args, **kwargs)
