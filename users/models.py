@@ -52,19 +52,19 @@ class Payment(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     payment_date = models.DateTimeField(verbose_name='Дата оплаты', auto_now_add=True)
 
-    # Универсальная связь (GenericForeignKey)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name='Тип объекта')
-    object_id = models.PositiveIntegerField(verbose_name='ID объекта')
-    paid_object = GenericForeignKey('content_type', 'object_id')
+    # Универсальная связь GenericForeignKey может привязаться к объекту любой модели
+    type_prod = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Тип объекта')
+    id_prod = models.PositiveIntegerField(verbose_name='ID объекта')
+    paid_prod = GenericForeignKey('type_prod', 'id_prod')
 
     # Параметры оплаты
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Сумма оплаты')
     payment_method = models.CharField(max_length=15, choices=PAYMENT_METHOD_CHOICES)
 
-    # Поле для записи названия купленного товара, что бы платёж не потерялся при его удалении,
+    # Поле для записи названия купленного товара, что бы платёж не потерялся при его удалении
     name_paid_product = models.CharField(max_length=255, verbose_name='Название на случай удаления курса, или урока')
 
     def save(self, *args, **kwargs):
-        if self.paid_object:
-            self.name_paid_product = self.paid_object.name
+        if self.paid_prod:
+            self.name_paid_product = self.paid_prod.name
         super().save(*args, **kwargs)
