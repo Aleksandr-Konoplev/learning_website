@@ -27,7 +27,11 @@ class PaymentListAPIView(ListAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
     filter_backends = (DjangoFilterBackend, OrderingFilter,)
-    filterset_fields = ('paid_prod',)
+    filterset_fields = {
+        'content_type__model': ['exact'],  # 'course' или 'lesson'
+        'object_id': ['exact'], # id курса или урока
+        'payment_method': ['exact'], # Фильтрация по способу оплаты
+    }
     ordering_fields = ('payment_date',)
 
 

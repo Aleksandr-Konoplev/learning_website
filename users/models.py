@@ -48,14 +48,13 @@ class Payment(models.Model):
         ('transfer', 'Перевод на счет'),
     ]
 
-
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     payment_date = models.DateTimeField(verbose_name='Дата оплаты', auto_now_add=True)
 
     # Универсальная связь GenericForeignKey может привязаться к объекту любой модели
-    type_prod = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Тип объекта')
-    id_prod = models.PositiveIntegerField(verbose_name='ID объекта')
-    paid_prod = GenericForeignKey('type_prod', 'id_prod')
+    content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Тип объекта')
+    object_id = models.PositiveIntegerField(verbose_name='ID объекта')
+    paid_prod = GenericForeignKey('content_type', 'object_id')
 
     # Параметры оплаты
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Сумма оплаты')

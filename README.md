@@ -1,6 +1,6 @@
 # Learning Website
 
-Простой проект на Django для обучения.
+Проект на Django, обучающая платформа
 
 ## Структура проекта
 
@@ -12,10 +12,34 @@ learning_website/
 │   ├── urls.py            # Маршруты URL
 │   ├── wsgi.py            # WSGI конфигурация
 │   └── asgi.py            # ASGI конфигурация
+├── users/                 # Приложение пользователей
+│   ├── __init__.py
+│   ├── admin.py           # Админка пользователей
+│   ├── apps.py            # Конфигурация приложения
+│   ├── models.py          # Модели пользователей
+│   ├── serializers.py     # Сериализаторы API
+│   ├── urls.py            # URL маршруты
+│   ├── views.py           # Представления API
+│   └── tests.py           # Тесты
+├── materials/             # Приложение материалов (курсы, уроки)
+│   ├── __init__.py
+│   ├── admin.py           # Админка материалов
+│   ├── apps.py            # Конфигурация приложения
+│   ├── models.py          # Модели курсов и уроков
+│   ├── serializers.py     # Сериализаторы API
+│   ├── urls.py            # URL маршруты
+│   ├── views.py           # Представления API
+│   └── tests.py           # Тесты
+├── media/                 # Медиафайлы
+│   ├── users/avatars/     # Аватары пользователей
+│   └── materials/preview/ # Превью материалов
+├── fixtures/              # Фикстуры для тестовых данных
+│   └── test_data.json
 ├── manage.py              # Django management script
 ├── pyproject.toml         # Зависимости Poetry
 ├── requirements.txt       # Зависимости pip
 ├── poetry.lock            # Lock файл Poetry
+├── .env.example           # Пример переменных окружения
 └── .env                   # Переменные окружения (не в git)
 
 ```
@@ -61,21 +85,14 @@ learning_website/
    ```
 
 ## Кастомные команды
-### Использование:
-
-#### Очищает данные через Django ORM:
-- python manage.py reset_db
-- python manage.py reset_db --force
-
-#### Полный сброс через SQL (PostgreSQL):
-- python manage.py reset_db_full
-- python manage.py reset_db_full --force
-
-#### Что делают команды:
-- Удаляют все данные из таблиц с учетом связей ForeignKey
-- Сбрасывают sequence ID (id начинается с 1)
-- Показывают статистику удаленных записей
-- Запрашивают подтверждение перед удалением
+1. Полная очистка БД (включая схемы, после команды необходимо применить миграции)
+   ```bash
+   python manage.py full_clean
+   ```
+2. Очистка данных БД (все таблицы и взаимосвязи остаются)
+   ```bash
+   python manage.py clean_data
+   ```
 
 ## Запуск
 
@@ -96,18 +113,23 @@ python manage.py runserver
 #### Курсы
 - `GET /materials/` - Список всех курсов
 - `POST /materials/` - Создать новый курс
-- `GET /materials/{id}/` - Получить курс по ID
-- `PUT /materials/{id}/` - Полностью обновить курс
-- `PATCH /materials/{id}/` - Частично обновить курс
-- `DELETE /materials/{id}/` - Удалить курс
+- `GET /materials/<id>/` - Получить курс по ID
+- `PUT /materials/<id>/` - Полностью обновить курс
+- `PATCH /materials/<id>/` - Частично обновить курс
+- `DELETE /materials/<id>/` - Удалить курс
 
 #### Уроки
 - `GET /materials/lessons/` - Список всех уроков
 - `POST /materials/lesson/create/` - Создать новый урок
-- `GET /materials/lesson/{id}/` - Получить урок по ID
-- `PUT /materials/lesson/{id}/update/` - Обновить урок
-- `PATCH /materials/lesson/{id}/update/` - Частично обновить урок
-- `DELETE /materials/lesson/{id}/delete/` - Удалить урок
+- `GET /materials/lesson/<id>/` - Получить урок по ID
+- `PUT /materials/lesson/<id>/update/` - Обновить урок
+- `PATCH /materials/lesson/<id>/update/` - Частично обновить урок
+- `DELETE /materials/lesson/<id>/delete/` - Удалить урок
+
+#### Платежи
+- `users/payments/` - Список всех платежей
+- `users/payments/?content_type__model=<name_model>` - Список отфильтрованный по модели
+- `users/payments/?content_type__model=<name_model>&object_id=<id>` - Список отфильтрованный по объекту модели
 
 ### Users API (`/users/`)
 
@@ -121,7 +143,18 @@ python manage.py runserver
 
 ## Технологии
 
+- Python 3.14+
 - Django 6.x
 - Django REST Framework
-- PostgreSQL
-- Poetry
+- Django filter 25.2
+- PostgreSQL (psycopg2)
+- Pillow (обработка изображений)
+- Poetry (управление зависимостями)
+- python-dotenv (переменные окружения)
+
+### Инструменты разработки
+
+- Black (форматирование кода)
+- isort (сортировка импортов)
+- flake8 (статический анализ)
+- mypy (проверка типов)

@@ -1,70 +1,48 @@
 [
   {
-    "model": "users.user",
-    "pk": 1,
-    "fields": {
-      "password": "pbkdf2_sha256$720000$test_salt$1$test_hash_for_user1",
-      "last_login": null,
-      "is_superuser": false,
-      "first_name": "Иван",
-      "last_name": "Иванов",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2024-01-15T10:00:00Z",
-      "email": "ivan@example.com",
-      "phone_number": "+7-999-123-45-67",
-      "citi": "Москва",
-      "avatar": "users/avatars/default_ava.png",
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "users.user",
-    "pk": 2,
-    "fields": {
-      "password": "pbkdf2_sha256$720000$test_salt$1$test_hash_for_user2",
-      "last_login": null,
-      "is_superuser": false,
-      "first_name": "Мария",
-      "last_name": "Петрова",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2024-02-20T14:30:00Z",
-      "email": "maria@example.com",
-      "phone_number": "+7-999-987-65-43",
-      "citi": "Санкт-Петербург",
-      "avatar": "users/avatars/default_ava.png",
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
     "model": "materials.course",
     "pk": 1,
     "fields": {
       "name": "Python для начинающих",
-      "preview": "materials/preview/default_prev.png",
-      "description": "Базовый курс по программированию на Python"
+      "preview": "materials/preview/python_basics.png",
+      "description": "Полный курс по основам программирования на Python. Изучите переменные, циклы, функции и многое другое."
     }
   },
   {
     "model": "materials.course",
     "pk": 2,
     "fields": {
-      "name": "JavaScript Pro",
-      "preview": "materials/preview/default_prev.png",
-      "description": "Продвинутый курс по JavaScript"
+      "name": "Django с нуля до профи",
+      "preview": "materials/preview/django_pro.png",
+      "description": "Создавайте веб-приложения на Django. Модели, views, шаблоны, аутентификация и deployment."
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 3,
+    "fields": {
+      "name": "JavaScript современный",
+      "preview": "materials/preview/js_modern.png",
+      "description": "ES6+, асинхронность, работа с DOM, fetch API и современные возможности JavaScript."
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 4,
+    "fields": {
+      "name": "PostgreSQL для разработчиков",
+      "preview": "materials/preview/postgresql.png",
+      "description": "Базы данных PostgreSQL. SQL-запросы, индексы, оптимизация, транзакции."
     }
   },
   {
     "model": "materials.lesson",
     "pk": 1,
     "fields": {
-      "name": "Django ORM",
-      "description": "Урок по работе с ORM в Django",
-      "preview": "materials/preview/default_prev.png",
-      "video_url": "https://example.com/video1",
+      "name": "Введение в Python",
+      "description": "Установка Python, запуск первой программы, понятие интерпретатора.",
+      "preview": "materials/preview/lesson1.png",
+      "video_url": "https://youtube.com/watch?v=python-intro",
       "course": 1
     }
   },
@@ -72,10 +50,10 @@
     "model": "materials.lesson",
     "pk": 2,
     "fields": {
-      "name": "Основы Python",
-      "description": "Введение в синтаксис Python",
-      "preview": "materials/preview/default_prev.png",
-      "video_url": "https://example.com/video2",
+      "name": "Переменные и типы данных",
+      "description": "Числа, строки, списки, словари. Преобразование типов и базовые операции.",
+      "preview": "materials/preview/lesson2.png",
+      "video_url": "https://youtube.com/watch?v=python-variables",
       "course": 1
     }
   },
@@ -83,21 +61,231 @@
     "model": "materials.lesson",
     "pk": 3,
     "fields": {
-      "name": "Основы JavaScript",
-      "description": "Введение в синтаксис JavaScript",
-      "preview": "materials/preview/default_prev.png",
-      "video_url": "https://example.com/video3",
+      "name": "Условия и циклы",
+      "description": "if/else/elif, for и while циклы, операторы break и continue.",
+      "preview": "materials/preview/lesson3.png",
+      "video_url": "https://youtube.com/watch?v=python-loops",
+      "course": 1
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 4,
+    "fields": {
+      "name": "Функции в Python",
+      "description": "Определение функций, аргументы, return, lambda-функции.",
+      "preview": "materials/preview/lesson4.png",
+      "video_url": "https://youtube.com/watch?v=python-functions",
+      "course": 1
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 5,
+    "fields": {
+      "name": "Установка Django",
+      "description": "Создание виртуального окружения, установка Django, старт проекта.",
+      "preview": "materials/preview/django1.png",
+      "video_url": "https://youtube.com/watch?v=django-install",
       "course": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 6,
+    "fields": {
+      "name": "Модели и база данных",
+      "description": "Создание моделей, миграции, работа с ORM Django.",
+      "preview": "materials/preview/django2.png",
+      "video_url": "https://youtube.com/watch?v=django-models",
+      "course": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 7,
+    "fields": {
+      "name": "Views и Templates",
+      "description": "Создание представлений, шаблонизатор Django, context.",
+      "preview": "materials/preview/django3.png",
+      "video_url": "https://youtube.com/watch?v=django-views",
+      "course": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 8,
+    "fields": {
+      "name": "Аутентификация и авторизация",
+      "description": "Регистрация, вход, выход, разграничение прав доступа.",
+      "preview": "materials/preview/django4.png",
+      "video_url": "https://youtube.com/watch?v=django-auth",
+      "course": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 9,
+    "fields": {
+      "name": "Основы JavaScript",
+      "description": "Переменные, функции, объекты в JavaScript. Отличия от других языков.",
+      "preview": "materials/preview/js1.png",
+      "video_url": "https://youtube.com/watch?v=js-basics",
+      "course": 3
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 10,
+    "fields": {
+      "name": "Работа с DOM",
+      "description": "Выбор элементов, изменение контента, обработка событий.",
+      "preview": "materials/preview/js2.png",
+      "video_url": "https://youtube.com/watch?v=js-dom",
+      "course": 3
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 11,
+    "fields": {
+      "name": "Асинхронный JavaScript",
+      "description": "Promises, async/await, fetch API, работа с сервером.",
+      "preview": "materials/preview/js3.png",
+      "video_url": "https://youtube.com/watch?v=js-async",
+      "course": 3
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 12,
+    "fields": {
+      "name": "Введение в SQL",
+      "description": "Базовые SELECT, INSERT, UPDATE, DELETE запросы.",
+      "preview": "materials/preview/sql1.png",
+      "video_url": "https://youtube.com/watch?v=sql-intro",
+      "course": 4
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 13,
+    "fields": {
+      "name": "Сложные запросы и JOIN",
+      "description": "INNER JOIN, LEFT JOIN, группировка, агрегатные функции.",
+      "preview": "materials/preview/sql2.png",
+      "video_url": "https://youtube.com/watch?v=sql-joins",
+      "course": 4
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "last_login": "2026-02-14T10:00:00Z",
+      "is_superuser": true,
+      "email": "admin@example.com",
+      "first_name": "Админ",
+      "last_name": "Системный",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T00:00:00Z",
+      "phone_number": "+79990000000",
+      "citi": "Москва",
+      "avatar": "users/avatars/admin.png",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "last_login": "2026-02-14T09:30:00Z",
+      "is_superuser": false,
+      "email": "ivan.petrov@example.com",
+      "first_name": "Иван",
+      "last_name": "Петров",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-15T00:00:00Z",
+      "phone_number": "+79031234567",
+      "citi": "Санкт-Петербург",
+      "avatar": "users/avatars/ivan.png",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "last_login": "2026-02-13T18:45:00Z",
+      "is_superuser": false,
+      "email": "maria.sidorova@example.com",
+      "first_name": "Мария",
+      "last_name": "Сидорова",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-20T00:00:00Z",
+      "phone_number": "+79161234567",
+      "citi": "Казань",
+      "avatar": "users/avatars/maria.png",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "last_login": "2026-02-14T08:15:00Z",
+      "is_superuser": false,
+      "email": "alexey.kuznetsov@example.com",
+      "first_name": "Алексей",
+      "last_name": "Кузнецов",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-02-01T00:00:00Z",
+      "phone_number": "+79251234567",
+      "citi": "Новосибирск",
+      "avatar": "users/avatars/alexey.png",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "elena.volkova@example.com",
+      "first_name": "Елена",
+      "last_name": "Волкова",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-02-10T00:00:00Z",
+      "phone_number": "+79361234567",
+      "citi": "Екатеринбург",
+      "avatar": "users/avatars/elena.png",
+      "groups": [],
+      "user_permissions": []
     }
   },
   {
     "model": "users.payment",
     "pk": 1,
     "fields": {
-      "user": 1,
-      "payment_date": "2024-03-01T09:00:00Z",
-      "type_prod": 7,
-      "id_prod": 1,
+      "user": 2,
+      "payment_date": "2026-01-20T10:00:00Z",
+      "content_type": ["materials", "course"],
+      "object_id": 1,
       "payment_amount": "15000.00",
       "payment_method": "transfer",
       "name_paid_product": "Python для начинающих"
@@ -107,26 +295,117 @@
     "model": "users.payment",
     "pk": 2,
     "fields": {
-      "user": 1,
-      "payment_date": "2024-03-10T11:00:00Z",
-      "type_prod": 8,
-      "id_prod": 1,
-      "payment_amount": "2500.00",
-      "payment_method": "cash",
-      "name_paid_product": "Django ORM"
+      "user": 2,
+      "payment_date": "2026-01-25T14:30:00Z",
+      "content_type": ["materials", "course"],
+      "object_id": 2,
+      "payment_amount": "25000.00",
+      "payment_method": "transfer",
+      "name_paid_product": "Django с нуля до профи"
     }
   },
   {
     "model": "users.payment",
     "pk": 3,
     "fields": {
-      "user": 2,
-      "payment_date": "2024-03-05T16:45:00Z",
-      "type_prod": 7,
-      "id_prod": 2,
-      "payment_amount": "20000.00",
+      "user": 3,
+      "payment_date": "2026-01-22T09:15:00Z",
+      "content_type": ["materials", "course"],
+      "object_id": 1,
+      "payment_amount": "15000.00",
+      "payment_method": "cash",
+      "name_paid_product": "Python для начинающих"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 4,
+    "fields": {
+      "user": 3,
+      "payment_date": "2026-02-01T16:45:00Z",
+      "content_type": ["materials", "lesson"],
+      "object_id": 5,
+      "payment_amount": "5000.00",
       "payment_method": "transfer",
-      "name_paid_product": "JavaScript Pro"
+      "name_paid_product": "Установка Django"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 5,
+    "fields": {
+      "user": 4,
+      "payment_date": "2026-02-05T11:20:00Z",
+      "content_type": ["materials", "course"],
+      "object_id": 3,
+      "payment_amount": "12000.00",
+      "payment_method": "transfer",
+      "name_paid_product": "JavaScript современный"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 6,
+    "fields": {
+      "user": 4,
+      "payment_date": "2026-02-06T13:00:00Z",
+      "content_type": ["materials", "lesson"],
+      "object_id": 9,
+      "payment_amount": "3000.00",
+      "payment_method": "cash",
+      "name_paid_product": "Основы JavaScript"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 7,
+    "fields": {
+      "user": 4,
+      "payment_date": "2026-02-10T15:30:00Z",
+      "content_type": ["materials", "course"],
+      "object_id": 4,
+      "payment_amount": "18000.00",
+      "payment_method": "transfer",
+      "name_paid_product": "PostgreSQL для разработчиков"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 8,
+    "fields": {
+      "user": 5,
+      "payment_date": "2026-02-11T10:45:00Z",
+      "content_type": ["materials", "course"],
+      "object_id": 1,
+      "payment_amount": "15000.00",
+      "payment_method": "transfer",
+      "name_paid_product": "Python для начинающих"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 9,
+    "fields": {
+      "user": 2,
+      "payment_date": "2026-02-12T09:00:00Z",
+      "content_type": ["materials", "lesson"],
+      "object_id": 2,
+      "payment_amount": "2500.00",
+      "payment_method": "cash",
+      "name_paid_product": "Переменные и типы данных"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 10,
+    "fields": {
+      "user": 3,
+      "payment_date": "2026-02-13T14:20:00Z",
+      "content_type": ["materials", "lesson"],
+      "object_id": 10,
+      "payment_amount": "3500.00",
+      "payment_method": "transfer",
+      "name_paid_product": "Работа с DOM"
     }
   }
 ]
