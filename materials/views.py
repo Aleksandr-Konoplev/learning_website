@@ -17,7 +17,7 @@ class CourseViewSet(ModelViewSet):
     serializer_class = CourseSerializer
 
 
-# CRUD через для уроков
+# CRUD для уроков
 class LessonCreateAPIView(CreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
