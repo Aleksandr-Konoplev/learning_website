@@ -25,19 +25,23 @@ class UserCreateAPIView(CreateAPIView):
 
 
 class UsersListAPIView(ListAPIView):
-    pass
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
 
 
 class UserRetrieveAPIView(RetrieveAPIView):
-    pass
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
 
 
 class UserUpdateAPIView(UpdateAPIView):
-    pass
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
 
 
 class UserDestroyAPIView(DestroyAPIView):
-    pass
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
 
 
 # Платежи
