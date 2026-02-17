@@ -19,6 +19,7 @@ class Course(models.Model):
         null=True,
     )
     description = models.TextField(verbose_name='Описание курса')
+    owner = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Владелец курса')
 
     class Meta:
         verbose_name = 'Курс'
@@ -56,9 +57,12 @@ class Lesson(models.Model):
     course = models.ForeignKey(
         Course,
         related_name='lessons',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         verbose_name='Курс',
+        null=True,
+        blank=True
     )
+    owner = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Владелец урока')
 
     class Meta:
         verbose_name = 'Урок'

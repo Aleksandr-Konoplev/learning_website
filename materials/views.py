@@ -16,11 +16,19 @@ class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 # CRUD для уроков
 class LessonCreateAPIView(CreateAPIView):
     # queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+        # lesson = serializer.save()
+        # lesson.owner = self.request.user
+        # lesson.save()
 
 
 class LessonListAPIView(ListAPIView):
