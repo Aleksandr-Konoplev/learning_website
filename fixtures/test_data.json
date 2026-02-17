@@ -5,7 +5,8 @@
     "fields": {
       "name": "Python для начинающих",
       "preview": "materials/preview/python_basics.png",
-      "description": "Полный курс по основам программирования на Python. Изучите переменные, циклы, функции и многое другое."
+      "description": "Полный курс по основам программирования на Python. Изучите переменные, циклы, функции и многое другое.",
+      "owner": 2
     }
   },
   {
@@ -14,7 +15,8 @@
     "fields": {
       "name": "Django с нуля до профи",
       "preview": "materials/preview/django_pro.png",
-      "description": "Создавайте веб-приложения на Django. Модели, views, шаблоны, аутентификация и deployment."
+      "description": "Создавайте веб-приложения на Django. Модели, views, шаблоны, аутентификация и deployment.",
+      "owner": 2
     }
   },
   {
@@ -23,7 +25,8 @@
     "fields": {
       "name": "JavaScript современный",
       "preview": "materials/preview/js_modern.png",
-      "description": "ES6+, асинхронность, работа с DOM, fetch API и современные возможности JavaScript."
+      "description": "ES6+, асинхронность, работа с DOM, fetch API и современные возможности JavaScript.",
+      "owner": 3
     }
   },
   {
@@ -32,7 +35,8 @@
     "fields": {
       "name": "PostgreSQL для разработчиков",
       "preview": "materials/preview/postgresql.png",
-      "description": "Базы данных PostgreSQL. SQL-запросы, индексы, оптимизация, транзакции."
+      "description": "Базы данных PostgreSQL. SQL-запросы, индексы, оптимизация, транзакции.",
+      "owner": 3
     }
   },
   {
@@ -43,7 +47,8 @@
       "description": "Установка Python, запуск первой программы, понятие интерпретатора.",
       "preview": "materials/preview/lesson1.png",
       "video_url": "https://youtube.com/watch?v=python-intro",
-      "course": 1
+      "course": 1,
+      "owner": 2
     }
   },
   {
@@ -54,7 +59,8 @@
       "description": "Числа, строки, списки, словари. Преобразование типов и базовые операции.",
       "preview": "materials/preview/lesson2.png",
       "video_url": "https://youtube.com/watch?v=python-variables",
-      "course": 1
+      "course": 1,
+      "owner": 2
     }
   },
   {
@@ -65,7 +71,8 @@
       "description": "if/else/elif, for и while циклы, операторы break и continue.",
       "preview": "materials/preview/lesson3.png",
       "video_url": "https://youtube.com/watch?v=python-loops",
-      "course": 1
+      "course": 1,
+      "owner": 2
     }
   },
   {
@@ -76,7 +83,8 @@
       "description": "Определение функций, аргументы, return, lambda-функции.",
       "preview": "materials/preview/lesson4.png",
       "video_url": "https://youtube.com/watch?v=python-functions",
-      "course": 1
+      "course": 1,
+      "owner": 2
     }
   },
   {
@@ -87,7 +95,8 @@
       "description": "Создание виртуального окружения, установка Django, старт проекта.",
       "preview": "materials/preview/django1.png",
       "video_url": "https://youtube.com/watch?v=django-install",
-      "course": 2
+      "course": 2,
+      "owner": 2
     }
   },
   {
@@ -98,7 +107,8 @@
       "description": "Создание моделей, миграции, работа с ORM Django.",
       "preview": "materials/preview/django2.png",
       "video_url": "https://youtube.com/watch?v=django-models",
-      "course": 2
+      "course": 2,
+      "owner": 2
     }
   },
   {
@@ -109,7 +119,8 @@
       "description": "Создание представлений, шаблонизатор Django, context.",
       "preview": "materials/preview/django3.png",
       "video_url": "https://youtube.com/watch?v=django-views",
-      "course": 2
+      "course": 2,
+      "owner": 2
     }
   },
   {
@@ -120,7 +131,8 @@
       "description": "Регистрация, вход, выход, разграничение прав доступа.",
       "preview": "materials/preview/django4.png",
       "video_url": "https://youtube.com/watch?v=django-auth",
-      "course": 2
+      "course": 2,
+      "owner": 2
     }
   },
   {
@@ -131,7 +143,8 @@
       "description": "Переменные, функции, объекты в JavaScript. Отличия от других языков.",
       "preview": "materials/preview/js1.png",
       "video_url": "https://youtube.com/watch?v=js-basics",
-      "course": 3
+      "course": 3,
+      "owner": 3
     }
   },
   {
@@ -142,7 +155,8 @@
       "description": "Выбор элементов, изменение контента, обработка событий.",
       "preview": "materials/preview/js2.png",
       "video_url": "https://youtube.com/watch?v=js-dom",
-      "course": 3
+      "course": 3,
+      "owner": 3
     }
   },
   {
@@ -153,7 +167,8 @@
       "description": "Promises, async/await, fetch API, работа с сервером.",
       "preview": "materials/preview/js3.png",
       "video_url": "https://youtube.com/watch?v=js-async",
-      "course": 3
+      "course": 3,
+      "owner": 3
     }
   },
   {
@@ -164,7 +179,8 @@
       "description": "Базовые SELECT, INSERT, UPDATE, DELETE запросы.",
       "preview": "materials/preview/sql1.png",
       "video_url": "https://youtube.com/watch?v=sql-intro",
-      "course": 4
+      "course": 4,
+      "owner": 3
     }
   },
   {
@@ -175,14 +191,15 @@
       "description": "INNER JOIN, LEFT JOIN, группировка, агрегатные функции.",
       "preview": "materials/preview/sql2.png",
       "video_url": "https://youtube.com/watch?v=sql-joins",
-      "course": 4
+      "course": 4,
+      "owner": 3
     }
   },
   {
     "model": "users.user",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "password": "AdminQaz2607",
       "last_login": "2026-02-14T10:00:00Z",
       "is_superuser": true,
       "email": "admin@example.com",
@@ -202,7 +219,7 @@
     "model": "users.user",
     "pk": 2,
     "fields": {
-      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "password": "IvanQaz2607",
       "last_login": "2026-02-14T09:30:00Z",
       "is_superuser": false,
       "email": "ivan.petrov@example.com",
@@ -222,7 +239,7 @@
     "model": "users.user",
     "pk": 3,
     "fields": {
-      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "password": "MariaQaz2607",
       "last_login": "2026-02-13T18:45:00Z",
       "is_superuser": false,
       "email": "maria.sidorova@example.com",
@@ -242,7 +259,7 @@
     "model": "users.user",
     "pk": 4,
     "fields": {
-      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "password": "AlexeyQaz2607",
       "last_login": "2026-02-14T08:15:00Z",
       "is_superuser": false,
       "email": "alexey.kuznetsov@example.com",
@@ -262,7 +279,7 @@
     "model": "users.user",
     "pk": 5,
     "fields": {
-      "password": "pbkdf2_sha256$720000$test$test123hash",
+      "password": "ElenaQaz2607",
       "last_login": null,
       "is_superuser": false,
       "email": "elena.volkova@example.com",

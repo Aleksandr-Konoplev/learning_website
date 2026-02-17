@@ -9,6 +9,7 @@ from rest_framework.generics import (
 
 from materials.models import Course, Lesson
 from materials.serializers import CourseSerializer, LessonSerializer
+from users.permissions import IsModer
 
 
 # CRUD через ModelViewSet для курсов
@@ -19,16 +20,20 @@ class CourseViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    def get_permissions(self):
+        if self.action in ['create', 'destroy']:
+            self.permission_classes = (~IsModer,)
+        elif self.action in ['update', 'retrieve']:
+            self.permission_classes = (IsModer,)
+        return super().get_permissions()
+
+
 # CRUD для уроков
 class LessonCreateAPIView(CreateAPIView):
-    # queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-        # lesson = serializer.save()
-        # lesson.owner = self.request.user
-        # lesson.save()
 
 
 class LessonListAPIView(ListAPIView):
@@ -48,4 +53,3 @@ class LessonUpdateAPIView(UpdateAPIView):
 
 class LessonDestroyAPIView(DestroyAPIView):
     queryset = Lesson.objects.all()
-    # serializer_class = LessonSerializer
