@@ -10,7 +10,7 @@ class LessonSerializer(ModelSerializer):
 
 
 class CourseSerializer(ModelSerializer):
-
+    """Сериалайзер курсов"""
     count_lesson_in_course = SerializerMethodField()
     lessons_info = SerializerMethodField()
 
