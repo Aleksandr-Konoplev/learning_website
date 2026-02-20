@@ -81,7 +81,7 @@ learning_website/
    
 5. Добавить тестовые значения в базу данных:
    ```bash
-   python manage.py loaddata users/fixtures/test_data.json
+   python manage.py load_test_data
    ```
 
 ## Кастомные команды
