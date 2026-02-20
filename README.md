@@ -104,7 +104,7 @@ python manage.py runserver
 
 
 ## API Эндпоинты
-
+q
 ### Admin
 - `GET /admin/` - Админ панель Django
 
