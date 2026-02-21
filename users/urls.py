@@ -3,13 +3,16 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import SimpleRouter
 from users.views import (
+    # Пользователи
     UserCreateAPIView,
     UsersListAPIView,
     UserRetrieveAPIView,
     UserUpdateAPIView,
     UserDestroyAPIView,
     # Платежи
-    PaymentListAPIView)
+    PaymentListAPIView,
+    # Подписки
+    CourseSubscriptionAPIView)
 from users.apps import UsersConfig
 
 app_name = UsersConfig.name
@@ -27,4 +30,6 @@ urlpatterns = [
     path('<int:pk>/delete/', UserDestroyAPIView.as_view(), name='user_delete'),
     # Платежи
     path('payments/', PaymentListAPIView.as_view(), name='payments_list'),
+    # Подписки
+    path('subscriptions/', CourseSubscriptionAPIView.as_view(), name='user_subscriptions'),
 ] + router.urls
