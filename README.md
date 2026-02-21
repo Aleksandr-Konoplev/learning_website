@@ -126,12 +126,15 @@ q
 - `PATCH /materials/lesson/<id>/update/` - Частично обновить урок
 - `DELETE /materials/lesson/<id>/delete/` - Удалить урок
 
+### Users API (`/users/`)
+
 #### Платежи
 - `users/payments/` - Список всех платежей
 - `users/payments/?content_type__model=<name_model>` - Список отфильтрованный по модели
 - `users/payments/?content_type__model=<name_model>&object_id=<id>` - Список отфильтрованный по объекту модели
 
-### Users API (`/users/`)
+#### Подписки
+- `users/subscriptions/` - Подписаться / Отписаться
 
 #### Пользователи
 - `GET /users/` - Список всех пользователей
