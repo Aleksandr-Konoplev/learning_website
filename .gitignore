@@ -214,5 +214,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# My ignor
 /tasks.md
 /draft.md
+/materials/tests_draft.py

@@ -9,6 +9,7 @@ class Course(models.Model):
     name: models.CharField
     preview: models.ImageField
     description: models.TextField
+    owner: models.ForeignKey
 
     name = models.CharField(max_length=255, verbose_name='Курс')
     preview = models.ImageField(
@@ -39,6 +40,7 @@ class Lesson(models.Model):
     preview: models.ImageField
     video_url: models.URLField
     course: models.ForeignKey
+    owner: models.ForeignKey
 
     name = models.CharField(max_length=255, verbose_name='Название урока')
     description = models.TextField(verbose_name='Описание урока')
