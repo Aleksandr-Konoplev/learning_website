@@ -16,6 +16,7 @@ from rest_framework.views import APIView
 from materials.models import Course
 from users.models import User, Payment, Subscription
 from users.serializers import UserSerializer, PaymentSerializer
+from users.paginators import UsersPaginator
 
 
 #-----------------------------------------
@@ -35,6 +36,7 @@ class UserCreateAPIView(CreateAPIView):
 class UsersListAPIView(ListAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    pagination_class = UsersPaginator
 
 
 class UserRetrieveAPIView(RetrieveAPIView):

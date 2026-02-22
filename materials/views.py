@@ -10,6 +10,7 @@ from rest_framework.generics import (
 
 from materials.models import Course, Lesson
 from materials.serializers import CourseSerializer, LessonSerializer
+from materials.paginators import MaterialsPaginator
 from users.permissions import IsModer, IsOwner
 
 
@@ -17,6 +18,7 @@ from users.permissions import IsModer, IsOwner
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    pagination_class = MaterialsPaginator
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -43,6 +45,7 @@ class LessonCreateAPIView(CreateAPIView):
 class LessonListAPIView(ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    pagination_class = MaterialsPaginator
 
 
 class LessonRetrieveAPIView(RetrieveAPIView):
