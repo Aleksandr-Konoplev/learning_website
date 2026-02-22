@@ -46,8 +46,6 @@ class LessonTestCase(APITestCase):
         }
         response = self.client.post(url, data)
 
-        print(response.status_code)
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     #     # self.assertEqual(Lesson.objects.all().count(), 2)
 

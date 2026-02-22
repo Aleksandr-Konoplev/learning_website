@@ -10,7 +10,11 @@ class WebLinkValidator:
     def __call__(self, attrs):
         url = attrs.get(self.field)
 
+        # Проверка на пустой домен
+        if not url:
+            return attrs
+
         for domain in self.allowed_domains:
-            if url and domain in url.lower():
+            if domain in url.lower():
                 return attrs
         raise ValidationError('Запрещено использовать этот ресурс')
