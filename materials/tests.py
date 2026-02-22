@@ -6,6 +6,7 @@ from materials.models import Course, Lesson
 
 
 class LessonTestCase(APITestCase):
+    """ Тесты CRUD операций над моделью Lesson """
     client: APIClient
 
     def setUp(self):
@@ -36,6 +37,28 @@ class LessonTestCase(APITestCase):
         self.assertEqual(data.get('name'), 'Test lesson')
         self.assertEqual(data.get('course'), self.course.pk)
 
+    def test_lesson_list(self):
+        url = reverse('materials:lessons_list')
+        response = self.client.get(url)
+        result = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results": [
+                {
+                    "id": self.lesson.pk,
+                    "name": self.lesson.name,
+                    "description": self.lesson.description,
+                    "preview": 'http://testserver/media/materials/preview/default_prev.png',
+                    "video_url": None,
+                    "course": self.course.pk,
+                    "owner": self.user_owner.pk
+                }
+            ]
+        }
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), result)
+
     def test_lesson_create(self):
         url = reverse('materials:lesson_create')
         data = {
@@ -47,14 +70,20 @@ class LessonTestCase(APITestCase):
         response = self.client.post(url, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    #     # self.assertEqual(Lesson.objects.all().count(), 2)
+        self.assertEqual(Lesson.objects.all().count(), 2)
 
+    def test_lesson_update(self):
+        url = reverse('materials:lesson_update', args=(self.lesson.pk,))
+        data = {
+            'name': 'Test update lesson',
+            'description': 'Test update description'
+        }
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()['name'], 'Test update lesson')
 
-
-
-
-    # def test_lesson_delete(self):
-    #     url = reverse("materials:lesson_delete", args=(self.lesson.pk,))
-    #     response = self.client.delete(url)
-    #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-    #     self.assertEqual(Lesson.objects.all().count(), 0)
+    def test_lesson_destroy(self):
+        url = reverse("materials:lesson_delete", args=(self.lesson.pk,))
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Lesson.objects.all().count(), 0)
