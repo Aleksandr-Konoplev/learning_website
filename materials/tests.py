@@ -87,3 +87,45 @@ class LessonTestCase(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Lesson.objects.all().count(), 0)
+
+    def test_lesson_moder_create(self):
+        """ Попытка создания урока модератором """
+        self.client.force_authenticate(user=self.user_moder)
+        url = reverse('materials:lesson_create')
+        data = {
+            'name': 'Test create lesson by moderator',
+            'owner': self.user_moder.pk,
+            'description': 'Test description',
+            'course': self.course.pk
+        }
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(Lesson.objects.all().count(), 1)
+
+    def test_lesson_moder_destroy(self):
+        """ Попытка удаления урока модератором """
+        self.client.force_authenticate(user=self.user_moder)
+        url = reverse("materials:lesson_delete", args=(self.lesson.pk,))
+        response = self.client.delete(url)
+
+        # Модератор может удалять только свои уроки, этот урок принадлежит user_owner
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(Lesson.objects.all().count(), 1)
+
+    def test_course_subscription(self):
+        """ Тестирование подписки / отписки на курс """
+        self.client.force_authenticate(user=self.user_default)
+        url = reverse('users:user_subscriptions')
+        data = {'course_id': self.course.pk}
+
+        # Подписка
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json().get('message'), 'подписка добавлена')
+
+        # Отписка
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json().get('message'), 'подписка удалена')
+
