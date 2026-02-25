@@ -16,8 +16,8 @@ class LessonSerializer(ModelSerializer):
 
 class CourseSerializer(ModelSerializer):
     """Сериалайзер курсов"""
-    count_lesson_in_course = SerializerMethodField()
-    lessons_info = SerializerMethodField()
+    count_lesson_in_course = SerializerMethodField(label='Количество уроков в курсе')
+    lessons_info = SerializerMethodField(label='Общая информация по уроку')
     is_subscribed = SerializerMethodField()
 
     @staticmethod
