@@ -17,6 +17,7 @@ from materials.models import Course
 from users.models import User, Payment, Subscription
 from users.serializers import UserSerializer, PaymentSerializer
 from users.paginators import UsersPaginator
+from users.services import create_stripe_price, create_stripe_session
 
 
 #-----------------------------------------
@@ -58,7 +59,16 @@ class UserDestroyAPIView(DestroyAPIView):
 #---------------- Платежи ----------------
 #-----------------------------------------
 class PaymentCreateAPIView(CreateAPIView):
-    pass
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        price = create_stripe_price(payment.payment_amount)
+        session_id, payment_link = create_stripe_session(price)
+        payment.session_id = session_id
+        payment.payment_link = payment_link
+        payment.save()
 
 
 class PaymentListAPIView(ListAPIView):
@@ -84,6 +94,7 @@ class PaymentUpdateAPIView(UpdateAPIView):
 
 class PaymentDestroyAPIView(DestroyAPIView):
     pass
+
 
 #-----------------------------------------
 #---------------- Подписки ---------------

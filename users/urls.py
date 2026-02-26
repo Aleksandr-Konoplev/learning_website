@@ -11,6 +11,7 @@ from users.views import (
     UserDestroyAPIView,
     # Платежи
     PaymentListAPIView,
+    PaymentCreateAPIView,
     # Подписки
     CourseSubscriptionAPIView)
 from users.apps import UsersConfig
@@ -30,6 +31,7 @@ urlpatterns = [
     path('<int:pk>/delete/', UserDestroyAPIView.as_view(), name='user_delete'),
     # Платежи
     path('payments/', PaymentListAPIView.as_view(), name='payments_list'),
+    path('payment/create/', PaymentCreateAPIView.as_view(), name='payment_create'),
     # Подписки
     path('subscriptions/', CourseSubscriptionAPIView.as_view(), name='user_subscriptions'),
 ] + router.urls
