@@ -42,6 +42,7 @@ class User(AbstractUser):
 
 
 class Payment(models.Model):
+    """ Модель оплоты, курса, или урока. """
 
     PAYMENT_METHOD_CHOICES = [
         ('cash', 'Наличные'),
@@ -59,6 +60,7 @@ class Payment(models.Model):
     # Параметры оплаты
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Сумма оплаты')
     payment_method = models.CharField(max_length=15, choices=PAYMENT_METHOD_CHOICES)
+    payment_link = models.URLField(max_length=400, verbose_name='Ссылка на оплату', blank=True, null=True)
 
     # Поле для записи названия купленного товара, что бы платёж не потерялся при удалении товара
     name_paid_product = models.CharField(max_length=255, verbose_name='Название на случай удаления курса, или урока')
