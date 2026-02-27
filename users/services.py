@@ -1,5 +1,6 @@
 import stripe
 from config.settings import STRIPE_API_KEY
+from django.core.mail import send_mail, send_mass_mail
 
 
 stripe.api_key = STRIPE_API_KEY
@@ -23,3 +24,9 @@ def create_stripe_session(price):
         mode='payment',
     )
     return session.get('id'), session.get('url')
+
+
+def send_mail_subscribe(email_list, message):
+    """ Уведомить об обновлениях """
+    pass
+

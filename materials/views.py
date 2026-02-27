@@ -12,6 +12,7 @@ from materials.models import Course, Lesson
 from materials.serializers import CourseSerializer, LessonSerializer
 from materials.paginators import MaterialsPaginator
 from users.permissions import IsModer, IsOwner
+from users.tasks import task_update
 
 
 # CRUD через ModelViewSet для курсов
@@ -31,6 +32,12 @@ class CourseViewSet(ModelViewSet):
         elif self.action == 'destroy':
             self.permission_classes = (~IsModer | IsOwner,)
         return super().get_permissions()
+
+    def perform_update(self, serializer):
+        serializer.save()
+        # emails = Получить почты
+        # Вызвать таск рассылки
+        task_update.delay()
 
 
 # CRUD для уроков
