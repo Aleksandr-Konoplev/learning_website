@@ -143,10 +143,11 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 # ---------------------------------------------------------
 
-# Настройки для Celery
+# Настройки для Celery beat здя запуска задач по расписанию
 CELERY_BEAT_SCHEDULE = {
     'block_user': {
         'task': 'users.tasks.block_user',  # Путь к задаче
         'schedule': timedelta(hours=24),  # Расписание выполнения задачи
     },
 }
+# ---------------------------------------------------------
