@@ -1,6 +1,7 @@
 import stripe
 from config.settings import STRIPE_API_KEY
-from django.core.mail import send_mail, send_mass_mail
+from django.core.mail import send_mail
+from config.settings import EMAIL_HOST_USER
 
 
 stripe.api_key = STRIPE_API_KEY
@@ -27,6 +28,6 @@ def create_stripe_session(price):
 
 
 def send_mail_subscribe(email_list, message):
-    """ Уведомить об обновлениях """
-    pass
+    """ Уведомить об обновлениях в курсе. """
+    send_mail(recipient_list=email_list, message=message, subject='Изменения в курсе', from_email=EMAIL_HOST_USER)
 

@@ -12,7 +12,7 @@ from materials.models import Course, Lesson
 from materials.serializers import CourseSerializer, LessonSerializer
 from materials.paginators import MaterialsPaginator
 from users.permissions import IsModer, IsOwner
-from users.tasks import task_update
+from users.tasks import task_update, test_task
 
 
 # CRUD через ModelViewSet для курсов
@@ -35,9 +35,14 @@ class CourseViewSet(ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save()
-        # emails = Получить почты
-        # Вызвать таск рассылки
-        task_update.delay()
+        # Вызвать задачи при обновлении курса (рассылки)
+        # Получаем почты подписчиков курса и его название
+        course = self.get_object()
+        course_name = course.name
+        my_mail = ['konoplev-ne@mail.ru']
+        subscribers = self.get_object().subscriptions.all()
+        emails = my_mail + [sub.user.email for sub in subscribers]
+        task_update.delay(emails, course_name)
 
 
 # CRUD для уроков
