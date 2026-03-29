@@ -1,0 +1,98 @@
+services:
+  db:  # сервис базы данных PostgreSQL
+    image: postgres:17  # используем готовый образ PostgreSQL версии 17
+    container_name: learning_db  # имя контейнера
+    restart: unless-stopped  # перезапускать контейнер, если он остановился (кроме ручной остановки)
+    environment:
+      POSTGRES_DB: ${NAME}  # имя базы данных (берётся из .env)
+      POSTGRES_USER: ${USER}  # пользователь БД
+      POSTGRES_PASSWORD: ${PASSWORD}  # пароль пользователя
+    ports:
+      - "5432:5432"  # проброс порта: хост -> контейнер
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # сохраняем данные БД вне контейнера
+    healthcheck:  # проверка "здоровья" контейнера
+      test: [ "CMD-SHELL", "pg_isready -U ${USER} -d ${NAME}" ]  # проверка доступности БД
+      interval: 10s  # как часто проверять
+      timeout: 5s  # тайм-аут проверки
+      retries: 5  # сколько раз пробовать
+
+  redis:  # сервис Redis (брокер для Celery)
+    image: redis:7-alpine  # лёгкий образ Redis
+    container_name: learning_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"  # стандартный порт Redis
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]  # проверка: отвечает ли Redis
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:  # основной Django-приложение
+    build: .  # собираем образ из Dockerfile в текущей папке
+    container_name: learning_web
+    restart: unless-stopped
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    # сначала применяем миграции, затем запускаем сервер
+    env_file:
+      - .env  # подключаем переменные окружения
+    environment:
+      HOST: db  # хост базы данных (имя сервиса = hostname внутри сети docker)
+      PORT: 5432  # порт БД
+      CELERY_BROKER_URL: redis://redis:6379/0  # адрес брокера (Redis)
+      CELERY_RESULT_BACKEND: redis://redis:6379/0  # где хранить результаты задач
+    volumes:
+      - .:/app  # монтируем проект внутрь контейнера (для разработки)
+      - media_data:/app/media  # сохраняем медиафайлы
+    ports:
+      - "8000:8000"  # доступ к Django с хоста
+    depends_on:
+      db:
+        condition: service_healthy  # ждать, пока БД станет доступной
+      redis:
+        condition: service_healthy  # ждать Redis
+
+  celery:  # воркер Celery (обработка фоновых задач)
+    build: .
+    container_name: learning_celery
+    restart: unless-stopped
+    command: celery -A config worker -l info  # запуск воркера
+    env_file:
+      - .env
+    environment:
+      HOST: db
+      PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    volumes:
+      - .:/app  # доступ к коду приложения
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery-beat:  # планировщик задач Celery (аналог cron)
+    build: .
+    container_name: learning_celery_beat
+    restart: unless-stopped
+    command: celery -A config beat -l info  # запуск планировщика
+    env_file:
+      - .env
+    environment:
+      HOST: db
+      PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:  # volume для хранения данных PostgreSQL
+  media_data:  # volume для пользовательских файлов (uploads)
