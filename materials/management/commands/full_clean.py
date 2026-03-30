@@ -9,6 +9,7 @@ class Command(BaseCommand):
     Удаляет все таблицы из БД - данные, связи, индексы, constraints.
     Использует прямое подключение через psycopg2.
     """
+
     help = 'ПОЛНАЯ очистка PostgreSQL БД - удаление всех таблиц с данными и связями'
 
     def add_arguments(self, parser):
@@ -50,10 +51,7 @@ class Command(BaseCommand):
         db = settings.DATABASES['default']
 
         if 'postgresql' not in db['ENGINE']:
-            raise CommandError(
-                f"Команда работает только с PostgreSQL. "
-                f"Текущий ENGINE: {db['ENGINE']}"
-            )
+            raise CommandError(f'Команда работает только с PostgreSQL. ' f'Текущий ENGINE: {db['ENGINE']}')
 
         return {
             'dbname': db['NAME'],
@@ -66,20 +64,16 @@ class Command(BaseCommand):
     def _connect(self, db_config):
         """Создает подключение к PostgreSQL через psycopg2."""
         try:
-            self.stdout.write(f"Подключение к БД: {db_config['dbname']}@{db_config['host']}")
+            self.stdout.write(f'Подключение к БД: {db_config['dbname']}@{db_config['host']}')
             return psycopg2.connect(**db_config)
         except psycopg2.Error as e:
-            raise CommandError(f"Ошибка подключения к БД: {e}")
+            raise CommandError(f'Ошибка подключения к БД: {e}')
 
     def _validate_environment(self, options):
         """Проверяет окружение (production)."""
         if not settings.DEBUG and not options['noinput']:
-            self.stdout.write(
-                'ВНИМАНИЕ! Вы запускаете команду в production режиме (DEBUG=False)'
-            )
-            raise CommandError(
-                'Операция отменена. Используйте --noinput только если уверены.'
-            )
+            self.stdout.write('ВНИМАНИЕ! Вы запускаете команду в production режиме (DEBUG=False)')
+            raise CommandError('Операция отменена. Используйте --noinput только если уверены.')
 
     def _get_tables_to_drop(self, connection, options):
         """Возвращает список таблиц для удаления."""
@@ -95,17 +89,23 @@ class Command(BaseCommand):
     def _get_auth_tables(self):
         """Возвращает список системных таблиц Django auth."""
         return [
-            'auth_group', 'auth_group_permissions', 'auth_permission',
-            'auth_user', 'auth_user_groups', 'auth_user_user_permissions',
-            'django_admin_log', 'django_content_type', 'django_migrations',
-            'django_session'
+            'auth_group',
+            'auth_group_permissions',
+            'auth_permission',
+            'auth_user',
+            'auth_user_groups',
+            'auth_user_user_permissions',
+            'django_admin_log',
+            'django_content_type',
+            'django_migrations',
+            'django_session',
         ]
 
     def _get_all_tables(self, connection):
         """Получает список всех таблиц из PostgreSQL."""
         with connection.cursor() as cursor:
             cursor.execute("""
-                SELECT tablename FROM pg_tables 
+                SELECT tablename FROM pg_tables
                 WHERE schemaname = 'public'
                 ORDER BY tablename
             """)
@@ -153,7 +153,7 @@ class Command(BaseCommand):
     def _print_success(self, tables):
         """Выводит сообщение об успешном завершении."""
         self.stdout.write('')
-        self.stdout.write(f'База данных полностью очищена!')
+        self.stdout.write('База данных полностью очищена!')
         self.stdout.write(f'  Удалено таблиц: {len(tables)}')
         self.stdout.write('')
         self.stdout.write('Для восстановления структуры выполните:')

@@ -32,9 +32,7 @@ class Migration(migrations.Migration):
                 ("password", models.CharField(max_length=128, verbose_name="password")),
                 (
                     "last_login",
-                    models.DateTimeField(
-                        blank=True, null=True, verbose_name="last login"
-                    ),
+                    models.DateTimeField(blank=True, null=True, verbose_name="last login"),
                 ),
                 (
                     "is_superuser",
@@ -46,15 +44,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "first_name",
-                    models.CharField(
-                        blank=True, max_length=150, verbose_name="first name"
-                    ),
+                    models.CharField(blank=True, max_length=150, verbose_name="first name"),
                 ),
                 (
                     "last_name",
-                    models.CharField(
-                        blank=True, max_length=150, verbose_name="last name"
-                    ),
+                    models.CharField(blank=True, max_length=150, verbose_name="last name"),
                 ),
                 (
                     "is_staff",
@@ -74,15 +68,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "date_joined",
-                    models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="date joined"
-                    ),
+                    models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),
                 ),
                 (
                     "email",
-                    models.EmailField(
-                        max_length=254, unique=True, verbose_name="Email"
-                    ),
+                    models.EmailField(max_length=254, unique=True, verbose_name="Email"),
                 ),
                 (
                     "phone_number",
@@ -95,9 +85,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "citi",
-                    models.CharField(
-                        blank=True, max_length=50, null=True, verbose_name="Город"
-                    ),
+                    models.CharField(blank=True, max_length=50, null=True, verbose_name="Город"),
                 ),
                 (
                     "avatar",
@@ -159,9 +147,7 @@ class Migration(migrations.Migration):
                 ("object_id", models.PositiveIntegerField(verbose_name="ID объекта")),
                 (
                     "payment_amount",
-                    models.DecimalField(
-                        decimal_places=2, max_digits=10, verbose_name="Сумма оплаты"
-                    ),
+                    models.DecimalField(decimal_places=2, max_digits=10, verbose_name="Сумма оплаты"),
                 ),
                 (
                     "payment_method",

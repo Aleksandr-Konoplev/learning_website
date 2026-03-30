@@ -3,31 +3,29 @@ from config.settings import STRIPE_API_KEY
 from django.core.mail import send_mail
 from config.settings import EMAIL_HOST_USER
 
-
 stripe.api_key = STRIPE_API_KEY
 
 
 def create_stripe_price(amount):
-    """ Создание цены в Stripe. """
+    """Создание цены в Stripe."""
     price = stripe.Price.create(
-        currency='rub',
+        currency="rub",
         unit_amount=int(amount * 100),
-        product_data={'name': 'Price'},
+        product_data={"name": "Price"},
     )
     return price
 
 
 def create_stripe_session(price):
-    """ Создание сессии в Stripe. """
+    """Создание сессии в Stripe."""
     session = stripe.checkout.Session.create(
-        success_url='http://127.0.0.1:8000/',
-        line_items=[{'price': price.get('id'), 'quantity': 1}],
-        mode='payment',
+        success_url="http://127.0.0.1:8000/",
+        line_items=[{"price": price.get("id"), "quantity": 1}],
+        mode="payment",
     )
-    return session.get('id'), session.get('url')
+    return session.get("id"), session.get("url")
 
 
 def send_mail_subscribe(email_list, message):
-    """ Уведомить об обновлениях в курсе. """
-    send_mail(recipient_list=email_list, message=message, subject='Изменения в курсе', from_email=EMAIL_HOST_USER)
-
+    """Уведомить об обновлениях в курсе."""
+    send_mail(recipient_list=email_list, message=message, subject="Изменения в курсе", from_email=EMAIL_HOST_USER)

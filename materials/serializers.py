@@ -9,15 +9,16 @@ from users.models import Subscription
 class LessonSerializer(ModelSerializer):
     class Meta:
         model = Lesson
-        fields = '__all__'
-        validators = [WebLinkValidator(field='video_url')]
-        read_only_fields = ('owner',)
+        fields = "__all__"
+        validators = [WebLinkValidator(field="video_url")]
+        read_only_fields = ("owner",)
 
 
 class CourseSerializer(ModelSerializer):
     """Сериалайзер курсов"""
-    count_lesson_in_course = SerializerMethodField(label='Количество уроков в курсе')
-    lessons_info = SerializerMethodField(label='Общая информация по уроку')
+
+    count_lesson_in_course = SerializerMethodField(label="Количество уроков в курсе")
+    lessons_info = SerializerMethodField(label="Общая информация по уроку")
     is_subscribed = SerializerMethodField()
 
     @staticmethod
@@ -30,17 +31,22 @@ class CourseSerializer(ModelSerializer):
         return LessonSerializer(lessons, many=True).data
 
     def get_is_subscribed(self, course):
-        request = self.context.get('request')
+        request = self.context.get("request")
 
         # если пользователь не авторизован
         if not request or not request.user.is_authenticated:
             return False
 
-        return Subscription.objects.filter(
-            user=request.user,
-            course=course
-        ).exists()
+        return Subscription.objects.filter(user=request.user, course=course).exists()
 
     class Meta:
         model = Course
-        fields = ('name', 'count_lesson_in_course', 'lessons_info', 'description', 'is_subscribed', 'owner', 'id',)
+        fields = (
+            "name",
+            "count_lesson_in_course",
+            "lessons_info",
+            "description",
+            "is_subscribed",
+            "owner",
+            "id",
+        )
