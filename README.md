@@ -67,11 +67,11 @@ learning_website/
    ```env
    SECRET_KEY=your-secret-key
    DEBUG=True
-   NAME=your-db-name
-   USER=your-db-user
-   PASSWORD=your-db-password
-   HOST=localhost
+   HOST=127.0.0.1
    PORT=5432
+   POSTGRES_USER=postgres
+   POSTGRES_DB=learning_website
+   POSTGRES_PASSWORD=
    ```
 
 4. Применить миграции:
