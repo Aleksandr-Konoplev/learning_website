@@ -1,7 +1,7 @@
 #file: noinspection UndefinedAction,UndefinedParamsPresent
 name: CI/CD
 
-on: [push, pull_request]
+on: push
 
 concurrency:
   group: ci-cd-${{ github.ref }}
