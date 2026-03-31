@@ -116,7 +116,7 @@ jobs:
   deploy:
     name: Deploy to server
     runs-on: ubuntu-latest
-    needs: test
+    needs: docker-build
 
     steps:
       - name: Deploy application over SSH
