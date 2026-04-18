@@ -49,6 +49,8 @@ learning_website/
 - Python >= 3.14
 - PostgreSQL
 - Poetry (для управления зависимостями)
+- Docker
+- Docker Compose plugin
 
 ## Установка
 
@@ -101,6 +103,39 @@ python manage.py runserver
 ```
 
 Сервер запустится на http://127.0.0.1:8000/
+
+## Запуск через Docker Compose
+
+1. Создать файл `.env` на основе шаблона:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Запустить проект одной командой:
+   ```bash
+   docker compose up -d --build
+   ```
+
+3. Проверить состояние контейнеров:
+   ```bash
+   docker compose ps
+   ```
+
+4. При необходимости посмотреть логи:
+   ```bash
+   docker compose logs web --tail=100
+   ```
+
+После запуска приложение должно быть доступно по адресу `http://127.0.0.1`.
+
+### Состав сервисов Docker Compose
+
+- `web` - Django
+- `db` - PostgreSQL
+- `redis` - Redis
+- `celery` - Celery worker
+- `celery-beat` - Celery Beat scheduler
+- `nginx` - Nginx
 
 ---
 
@@ -163,14 +198,56 @@ python manage.py runserver
 
 8. Проверить доступность приложения с сервера:
    ```bash
-   curl -I http://127.0.0.1:8000
+   curl -I http://127.0.0.1
    ```
-   После запуска приложение должно быть доступно по адресу `http://<server_ip>:8000`.
+   После запуска приложение должно быть доступно по адресу `http://<server_ip>`.
 
 9. Для обновления проекта на сервере:
    ```bash
-   git pull origin hw_35_2
-   sudo docker compose up -d --build
+   git pull origin main
+   docker compose up -d --build
+   ```
+
+## CI/CD
+
+В репозитории настроен GitHub Actions workflow `.github/workflows/ci.yml`, который:
+
+1. Запускает линтинг `flake8`
+2. Запускает тесты Django
+3. Проверяет сборку Docker-образов
+4. При успешных проверках выполняет деплой на сервер по SSH
+
+## Настройка SSH-доступа для деплоя
+
+1. Сгенерировать SSH-ключ для GitHub Actions:
+   ```bash
+   ssh-keygen -t ed25519 -C "github-actions-deploy" -f github_actions_deploy
+   ```
+
+2. Добавить публичный ключ `github_actions_deploy.pub` на сервер в файл `~/.ssh/authorized_keys`
+
+3. Добавить приватный ключ `github_actions_deploy` в GitHub Secrets
+
+## GitHub Secrets для деплоя
+
+Необходимо создать следующие Secrets в репозитории GitHub:
+
+- `SERVER_HOST` - IP-адрес или домен сервера
+- `SERVER_PORT` - SSH-порт сервера
+- `SERVER_USER` - пользователь для SSH-подключения
+- `SERVER_SSH_KEY` - приватный SSH-ключ для деплоя
+- `SERVER_APP_DIR` - путь до проекта на сервере
+
+## Автоматический деплой
+
+После `push` в ветку `main` GitHub Actions:
+
+1. Проверяет код
+2. Подключается к серверу по SSH
+3. Обновляет проект из репозитория
+4. Выполняет команду:
+   ```bash
+   docker compose up -d --build
    ```
 
 ## API Эндпоинты

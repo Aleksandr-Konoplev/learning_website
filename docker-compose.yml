@@ -17,34 +17,36 @@ services:
       timeout: 5s
       retries: 5
 
-  redis:  # сервис Redis (брокер для Celery)
-    image: redis:7-alpine  # лёгкий образ Redis
+  redis:
+    image: redis:7-alpine
     container_name: learning_redis
     restart: unless-stopped
     ports:
-      - "6379:6379"  # стандартный порт Redis
+      - "6379:6379"
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]  # проверка: отвечает ли Redis
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
 
   web:  # основной Django-приложение
-    build: .  # собираем образ из Dockerfile в текущей папке
+    build: .
     container_name: learning_web
     restart: unless-stopped
     command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-    # сначала применяем миграции, затем запускаем сервер
     env_file:
-      - .env  # подключаем переменные окружения
+      - .env
     environment:
-      HOST: db  # хост базы данных (имя сервиса = hostname внутри сети docker)
+      # Django подключается к БД по имени сервиса db
+      HOST: db
       PORT: 5432  # порт БД
+      # Celery использует Redis внутри docker-сети
       CELERY_BROKER_URL: redis://redis:6379/0  # адрес брокера (Redis)
       CELERY_RESULT_BACKEND: redis://redis:6379/0  # где хранить результаты задач
     volumes:
-      - .:/app  # монтируем проект внутрь контейнера (для разработки)
-      - media_data:/app/media  # сохраняем медиафайлы
+      - .:/app
+      - media_data:/app/media
+      - static_data:/app/static
     ports:
       - "8000:8000"  # доступ к Django с хоста
     depends_on:
@@ -53,11 +55,11 @@ services:
       redis:
         condition: service_healthy  # ждать Redis
 
-  celery:  # воркер Celery (обработка фоновых задач)
+  celery:
     build: .
     container_name: learning_celery
     restart: unless-stopped
-    command: celery -A config worker -l info  # запуск воркера
+    command: celery -A config worker -l info
     env_file:
       - .env
     environment:
@@ -66,7 +68,7 @@ services:
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/0
     volumes:
-      - .:/app  # доступ к коду приложения
+      - .:/app
     depends_on:
       db:
         condition: service_healthy
@@ -93,6 +95,20 @@ services:
       redis:
         condition: service_healthy
 
+  nginx:
+    build: ./nginx
+    container_name: learning_nginx
+    restart: unless-stopped
+    ports:
+      # Наружу публикуем только Nginx
+      - "80:80"
+    volumes:
+      - static_data:/app/staticfiles
+      - media_data:/app/media
+    depends_on:
+      - web
+
 volumes:
-  postgres_data:  # volume для хранения данных PostgreSQL
-  media_data:  # volume для пользовательских файлов (uploads)
+  postgres_data:
+  static_data:
+  media_data:

@@ -49,6 +49,16 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
       SECRET_KEY: django-insecure-ci-secret-key
       DEBUG: "False"
@@ -66,7 +76,8 @@ jobs:
       EMAIL_HOST_PASSWORD: ci-password
       CELERY_BROKER_URL: redis://localhost:6379/0
       CELERY_RESULT_BACKEND: redis://localhost:6379/0
-      CSRF_TRUSTED_ORIGINS: http://127.0.0.1
+      ALLOWED_HOSTS: 127.0.0.1,localhost
+      CSRF_TRUSTED_ORIGINS: http://127.0.0.1,http://localhost
 
     steps:
       - name: Checkout repository
@@ -90,10 +101,22 @@ jobs:
       - name: Run tests
         run: python manage.py test
 
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Taking the repository code
+        uses: actions/checkout@v4
+
+      - name: Checking the build of docker images
+        run: docker compose build
+
   deploy:
     name: Deploy to server
     runs-on: ubuntu-latest
-    needs: test
+    needs: docker-build
 
     steps:
       - name: Deploy application over SSH

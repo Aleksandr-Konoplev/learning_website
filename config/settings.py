@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [host for host in os.getenv("ALLOWED_HOSTS", "").split(",") if host]
 CSRF_TRUSTED_ORIGINS = [host for host in os.getenv("CSRF_TRUSTED_ORIGINS").split(",") if host]
 
 INSTALLED_APPS = [
