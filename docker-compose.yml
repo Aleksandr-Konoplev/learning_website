@@ -1,21 +1,21 @@
 services:
-  db:  # сервис базы данных PostgreSQL
-    image: postgres:17  # используем готовый образ PostgreSQL версии 17
-    container_name: learning_db  # имя контейнера
-    restart: unless-stopped  # перезапускать контейнер, если он остановился (кроме ручной остановки)
+  db:
+    image: postgres:17
+    container_name: learning_db
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: ${NAME}  # имя базы данных (берётся из .env)
-      POSTGRES_USER: ${USER}  # пользователь БД
-      POSTGRES_PASSWORD: ${PASSWORD}  # пароль пользователя
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"  # проброс порта: хост -> контейнер
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data  # сохраняем данные БД вне контейнера
     healthcheck:  # проверка "здоровья" контейнера
-      test: [ "CMD-SHELL", "pg_isready -U ${USER} -d ${NAME}" ]  # проверка доступности БД
-      interval: 10s  # как часто проверять
-      timeout: 5s  # тайм-аут проверки
-      retries: 5  # сколько раз пробовать
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:  # сервис Redis (брокер для Celery)
     image: redis:7-alpine  # лёгкий образ Redis

@@ -12,7 +12,7 @@ from materials.models import Course, Lesson
 from materials.serializers import CourseSerializer, LessonSerializer
 from materials.paginators import MaterialsPaginator
 from users.permissions import IsModer, IsOwner
-from users.tasks import task_update, test_task
+from users.tasks import task_update
 
 
 # CRUD через ModelViewSet для курсов
@@ -25,11 +25,11 @@ class CourseViewSet(ModelViewSet):
         serializer.save(owner=self.request.user)
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action == "create":
             self.permission_classes = (~IsModer,)
-        elif self.action in ['update', 'retrieve']:
+        elif self.action in ["update", "retrieve"]:
             self.permission_classes = (IsModer | IsOwner,)
-        elif self.action == 'destroy':
+        elif self.action == "destroy":
             self.permission_classes = (~IsModer | IsOwner,)
         return super().get_permissions()
 
@@ -39,7 +39,7 @@ class CourseViewSet(ModelViewSet):
         # Получаем почты подписчиков курса и его название
         course = self.get_object()
         course_name = course.name
-        my_mail = ['konoplev-ne@mail.ru']
+        my_mail = ["konoplev-ne@mail.ru"]
         subscribers = self.get_object().subscriptions.all()
         emails = my_mail + [sub.user.email for sub in subscribers]
         task_update.delay(emails, course_name)
