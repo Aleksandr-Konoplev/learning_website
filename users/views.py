@@ -1,6 +1,7 @@
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status
 from rest_framework.filters import OrderingFilter
-# from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
@@ -8,13 +9,20 @@ from rest_framework.generics import (
     UpdateAPIView,
     DestroyAPIView,
 )
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from users.models import User, Payment
+from materials.models import Course
+from users.models import User, Payment, Subscription
 from users.serializers import UserSerializer, PaymentSerializer
+from users.paginators import UsersPaginator
+from users.services import create_stripe_price, create_stripe_session
 
 
-# Пользователи
+# -----------------------------------------
+# ------------- Пользователи --------------
+# -----------------------------------------
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
@@ -29,6 +37,7 @@ class UserCreateAPIView(CreateAPIView):
 class UsersListAPIView(ListAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    pagination_class = UsersPaginator
 
 
 class UserRetrieveAPIView(RetrieveAPIView):
@@ -46,21 +55,35 @@ class UserDestroyAPIView(DestroyAPIView):
     queryset = User.objects.all()
 
 
-# Платежи
+# -----------------------------------------
+# ---------------- Платежи ----------------
+# -----------------------------------------
 class PaymentCreateAPIView(CreateAPIView):
-    pass
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        price = create_stripe_price(payment.payment_amount)
+        session_id, payment_link = create_stripe_session(price)
+        payment.session_id = session_id
+        payment.payment_link = payment_link
+        payment.save()
 
 
 class PaymentListAPIView(ListAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
-    filter_backends = (DjangoFilterBackend, OrderingFilter,)
+    filter_backends = (
+        DjangoFilterBackend,
+        OrderingFilter,
+    )
     filterset_fields = {
-        'content_type__model': ['exact'],  # 'course' или 'lesson'
-        'object_id': ['exact'], # id курса или урока
-        'payment_method': ['exact'], # Фильтрация по способу оплаты
+        "content_type__model": ["exact"],  # 'course' или 'lesson'
+        "object_id": ["exact"],  # id курса или урока
+        "payment_method": ["exact"],  # Фильтрация по способу оплаты
     }
-    ordering_fields = ('payment_date',)
+    ordering_fields = ("payment_date",)
 
 
 class PaymentRetrieveAPIView(RetrieveAPIView):
@@ -74,3 +97,36 @@ class PaymentUpdateAPIView(UpdateAPIView):
 
 class PaymentDestroyAPIView(DestroyAPIView):
     pass
+
+
+# -----------------------------------------
+# ---------------- Подписки ---------------
+# -----------------------------------------
+class CourseSubscriptionAPIView(APIView):
+    """API для подписки/отписки курса"""
+
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        user = request.user
+        course_id = request.data.get("course_id")  # ищем id курса
+
+        # проверяем нашелся id, или нет
+        if not course_id:
+            return Response({"error": "Не указан ID курса"}, status=status.HTTP_400_BAD_REQUEST)
+
+        course_item = get_object_or_404(Course, id=course_id)
+
+        subs_item = Subscription.objects.filter(user=user, course=course_item)
+
+        # Логика подписки/отписки
+        if subs_item.exists():
+            # Если подписка уже есть - удаляем её
+            subs_item.delete()
+            message = "подписка удалена"
+        else:
+            # Если подписки нет - создаём
+            Subscription.objects.create(user=user, course=course_item)
+            message = "подписка добавлена"
+        return Response({"message": message})

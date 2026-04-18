@@ -214,5 +214,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# My ignor
 /tasks.md
 /draft.md
+/materials/draft.py
+/docker-compose.yml.reserv
+/draft.yml
+/draft.conf
